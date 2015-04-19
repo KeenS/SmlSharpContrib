@@ -1,0 +1,38 @@
+_require "basis.smi"
+_require "ffi.smi"
+_require "sql.smi"
+_require "sql/main/SQLErrors.smi"
+_require "sql/main/SQLBackendTy.smi"
+_require "sql/main/builtintypes/timestamp/TimeStamp.smi"
+_require "sql/main/builtintypes/decimal/Decimal.smi"
+_require "sql/main/builtintypes/float/Float.smi"
+_require "sql/main/SQLBACKEND.sig"
+_require "SQLite.smi"
+
+structure SQLiteBackend =
+struct
+  type conn (= ptr)
+  type res (= ptr)
+  type value (= boxed)
+
+  val execQuery : conn * string -> res
+  val closeConn : conn -> unit
+  val closeRel : res -> unit
+  val getDatabaseSchema : conn -> (string *
+                                   {colname: string,
+                                    ty: SMLSharp_SQL_BackendTy.ty,
+                                    nullable: bool} list) list
+  val connect : string -> conn
+  val fetch : res -> res option
+  val getValue : res * int -> value option
+  val intValue : value -> int option
+  val intInfValue : value -> IntInf.int option
+  val wordValue : value -> word option
+  val realValue : value -> real option
+  val stringValue : value -> string option
+  val charValue : value -> char option
+  val boolValue : value -> bool option
+  val timestampValue : value -> SMLSharp_SQL_TimeStamp.timestamp option
+  val decimalValue : value -> SMLSharp_SQL_Decimal.decimal option
+  val floatValue : value -> SMLSharp_SQL_Float.float option
+end

@@ -1,0 +1,22 @@
+_require "basis.smi"
+_require "ffi.smi"
+
+structure SQLite =
+struct
+type sqlite3 = unit ptr
+type char_ptr = unit ptr
+type sqlite3_stmt =unit ptr
+
+val sqlite3_open:       unit -> (string * sqlite3 ref) -> int
+val sqlite3_close:      unit -> (sqlite3) -> int
+val sqlite3_exec:       unit -> (sqlite3 * string * ((unit ptr * int * char_ptr ptr * char_ptr ptr) -> int) * unit ptr * string ref) -> int
+val sqlite3_prepare:    unit -> (sqlite3 * string * int * sqlite3_stmt ref * unit ptr) -> int
+val sqlite3_step:       unit -> (sqlite3_stmt) -> int
+val sqlite3_bind_int:   unit -> (sqlite3_stmt * int * int * int * ((unit ptr) -> unit ptr)) -> int
+val sqlite3_bind_text:  unit -> (sqlite3_stmt * int * string * int * ((unit ptr) -> unit ptr)) -> int
+val sqlite3_column_int:  unit -> (sqlite3_stmt * int) -> int
+val sqlite3_column_text: unit -> (sqlite3_stmt * int) -> char_ptr
+val sqlite3_column_real: unit -> (sqlite3_stmt * int) -> real
+val sqlite3_finalize:    unit -> (sqlite3_stmt) -> unit
+end
+
