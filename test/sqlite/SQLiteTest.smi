@@ -1,0 +1,10 @@
+_require "basis.smi"
+_require "smlunit-lib.smi"
+_require "sql.smi"
+_require "sql/Backend.smi"
+_require "sqlite/SQLiteBackend.smi"
+
+structure SQLiteTest = struct
+  val suite : unit -> SMLUnit.Test.test
+end
+

@@ -19,7 +19,7 @@ fun lazy f =
   end
 
 val lib =
-    lazy (fn _ => DynamicLink.dlopen "./libsqlite3.so")
+    lazy (fn _ => DynamicLink.dlopen "/home/kim/Sml/SmlSharpContrib/libsqlite3.so")
 
 fun find s = DynamicLink.dlsym(lib (), s)
 
@@ -53,8 +53,8 @@ val sqlite3_column_int =
 val sqlite3_column_text =
     lazy(fn _ => find "sqlite3_column_text"
                  :_import (sqlite3_stmt, int) -> unit ptr)
-val sqlite3_column_real =
-    lazy(fn _ => find "sqlite3_column_real"
+val sqlite3_column_double =
+    lazy(fn _ => find "sqlite3_column_double"
                  :_import (sqlite3_stmt, int) -> real)
 val sqlite3_finalize =
     lazy(fn _ => find "sqlite3_finalize"

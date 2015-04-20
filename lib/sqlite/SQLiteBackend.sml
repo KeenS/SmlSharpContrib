@@ -50,11 +50,20 @@ fun compileQuery (conn, sql) =
   in
       if ret = SQLITE_OK
       then !stmt
-      else raise Format
+      else (print (sql ^ "\n");raise Format)
   end
 
 
-fun execQuery (conn, sql) = compileQuery(conn, sql)
+fun execQuery (conn, sql) =
+  let
+      val stmt = compileQuery(conn, sql)
+      (* val res =  sqlite3_step()(stmt) *)
+  in
+      (* if res = SQLITE_DONE *)
+      (* then stmt *)
+      (* else stmt *)
+      stmt
+  end
 
 fun closeConn conn =
   case sqlite3_close()(conn) of
@@ -75,7 +84,7 @@ fun fetch res =
   let
       val ret = sqlite3_step()(res)
   in
-      (* to use SQLITE_XXX variable, you cannot use case .. of ... *)
+      (* to use SQLITE_XXX variable, you cannot use `case .. of ...` *)
       if  SQLITE_ROW = ret
       then SOME(res)
       else if SQLITE_DONE = ret
@@ -91,7 +100,7 @@ fun getValue (stmt, i) = SOME(stmt, i)
 fun intValue (stmt, i) = SOME(sqlite3_column_int()(stmt, i))
 fun intInfValue value =  raise Fail "SQLite does'nt support intInf"
 fun wordValue value = raise Fail "SQLite does'nt support word"
-fun realValue (stmt, i) = SOME(sqlite3_column_real()(stmt, i))
+fun realValue (stmt, i) = SOME(sqlite3_column_double()(stmt, i))
 fun stringValue (stmt, i) = let val str = sqlite3_column_text()(stmt, i) in
                                 if Pointer.isNull str
                                 then NONE
@@ -109,7 +118,9 @@ fun getDatabaseSchema conn =
       fun loop (SOME(res)) = loop(fetch(res))
         | loop NONE = ()
   in
-      [("myTable", [{colname = "id", nullable = false, ty = SMLSharp_SQL_BackendTy.INT}, {colname = "name", nullable = false, ty = SMLSharp_SQL_BackendTy.STRING}])]
+      [("tbl_test", [{colname = "id", nullable = false, ty = SMLSharp_SQL_BackendTy.INT},
+                     {colname = "name", nullable = false, ty = SMLSharp_SQL_BackendTy.STRING},
+                     {colname = "weight", nullable = false, ty = SMLSharp_SQL_BackendTy.REAL}])]
   end
 
 

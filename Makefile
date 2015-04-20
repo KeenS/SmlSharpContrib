@@ -22,7 +22,7 @@ TARGET = example/hello
 #  Flags
 # ------------------------------------------------------------
 SMLSHARP = smlsharp
-SMLSHARP_FLAGS = -I lib
+SMLSHARP_FLAGS = -I lib  -lpthread
 SMLSHARP_CFLAGS = -O2
 SMLSHARP_LDFLAGS =
 CFLAGS += -m32 -Iinclude
@@ -42,10 +42,16 @@ test_objects := $(test_sources:.sml=.o)
 example_sources := $(EXAMPLE_MODULES)
 example_objects := $(example_sources:.sml=.o)
 
+define SQL
+DROP TABLE IF EXISTS tbl_test;
+CREATE TABLE tbl_test (id INTEGER PRIMARY KEY, name TEXT, weight REAL);
+endef
+export SQL
+
 # ------------------------------------------------------------
 #  Build target
 # ------------------------------------------------------------
-.PHONY: all clean check
+.PHONY: all clean check prepare
 all: $(TARGET)
 
 $(TARGET): $(example_objects) $(objects) $(c_objects)
@@ -54,13 +60,15 @@ $(TARGET): $(example_objects) $(objects) $(c_objects)
 $(TEST_TARGET): $(objects) $(c_objects) $(lib_objects) $(test_objects)
 	$(SMLSHARP) $(SMLSHARP_LDFLAGS) $(SMLSHARP_FLAGS) -o $@ test/Main.smi $(c_objects)
 
-check: $(TEST_TARGET)
+check: $(TEST_TARGET) prepare_db
 	./$(TEST_TARGET)
 
 clean:
 	find . -name '*.o' | xargs rm -rf
 	rm -rf $(TARGET) $(TEST_TARGET)
 
+prepare_db: test/sqlite/test.db
+	echo "$$SQL" | sqlite3 $<
 # ------------------------------------------------------------
 #  Build rules
 # ------------------------------------------------------------
