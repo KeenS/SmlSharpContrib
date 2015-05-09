@@ -23,12 +23,6 @@ val stringKey: string D.key = D.mk()
 val fromString = D.emb stringKey
 val getString = Option.valOf o (D.prj stringKey)
 
-type flag = {leftAlign:bool,
-             addPlus:bool,
-             addBrank:bool,
-             printRadix:bool,
-             padWithZero:bool}
-
 datatype formatter
   = Const of string
   | FormatFun of D.t -> string
