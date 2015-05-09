@@ -105,10 +105,10 @@ fun position str pred i =
   end
 
 
-fun parsePercent str i =
+fun parsePercent t str i =
   let
       fun parseSpecifier flags precision width i =
-        case M.find (String.sub(str, i)) default of
+        case M.find (String.sub(str, i)) t of
             SOME(formatter) => (FormatFun(formatter flags precision width), i + 1)
           | NONE => raise Fail("invalid formatter: " ^ (Char.toString (String.sub(str, i))))
       fun parseWidth flags precision i =
@@ -131,7 +131,7 @@ fun parsePercent str i =
                  padWithZero = false} i
   end
 
-fun parse str =
+fun parse t str =
   let
       fun loop i acc =
         let
@@ -139,7 +139,7 @@ fun parse str =
         in
             case j of
                 SOME(j) => let
-                 val (arg, k) = parsePercent str (j+1)
+                 val (arg, k) = parsePercent t  str (j+1)
              in
                  loop k (arg :: Const(String.extract(str, i, SOME(j - i))) :: acc)
              end
@@ -149,6 +149,7 @@ fun parse str =
       loop 0 []
   end
 
+val parseDefault = parse default
 
 
 fun format str args =
@@ -159,7 +160,7 @@ fun format str args =
         | aux [] [] acc = String.concat(List.rev acc)
         | aux _ [] _ = raise (Fail "args too short")
         | aux [] _ _ = raise (Fail "args too long")
-      val t = parse str
+      val t = parseDefault str
   in
       aux t args []
   end
