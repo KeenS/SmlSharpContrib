@@ -40,8 +40,8 @@ fun formatWidth str {leftAlign, padWithZero, ...} (SOME(width)) =
       val char = if padWithZero then #"0" else #" "
   in
       if leftAlign
-      then S.padLeft char width str
-      else S.padRight char width str
+      then S.padRight char width str
+      else S.padLeft char width str
   end
   | formatWidth str _ _ = str
 
