@@ -1,0 +1,11 @@
+_require "basis.smi"
+
+structure Dynamic =
+struct 
+type t(=boxed)
+type 'a key(=boxed)
+
+val mk : unit -> 'a key
+val emb : 'a key -> 'a -> t
+val prj : 'a key -> t -> 'a option
+end
