@@ -24,15 +24,21 @@ fun parsePercent t str i =
         case M.find (String.sub(str, i)) t of
             SOME(formatter) => (FormatFun(formatter flags precision width), i + 1)
           | NONE => raise Fail("invalid formatter: " ^ (Char.toString (String.sub(str, i))))
+
+      (* unimplemented *)
+      fun parseLength flags width precision i = parseSpecifier flags width precision i
+
       fun parsePrecision flags width i = if String.sub(str, i) = #"."
                                          then case position str (not o Char.isDigit) (i+1) of
                                                   SOME(e) => parseSpecifier flags width (Int.fromString (String.substring(str, (i+1), e - i))) e
                                                 | NONE => parseSpecifier flags width NONE (i+1)
                                          else parseSpecifier flags width NONE i
+
       fun parseWidth flags i =
         case position str (not o Char.isDigit) i of
             SOME(e) => parsePrecision flags (Int.fromString (String.substring(str, i, e - i))) e
           | NONE => parsePrecision flags NONE i
+
       fun parseFlag flags i = case String.sub(str, i) of
                                   #"-" => parseFlag (flags # {leftAlign = true})   (i + 1)
                                 | #"+" => parseFlag (flags # {addPlus = true} )    (i + 1)
