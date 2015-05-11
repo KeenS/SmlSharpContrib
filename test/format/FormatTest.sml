@@ -2,6 +2,7 @@ structure FormatTest = struct
 open SMLUnit
 open Assert
 open Format
+open Dynamic
 
 fun suite _ = Test.labelTests [
       ("simple",

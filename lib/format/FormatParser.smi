@@ -1,0 +1,13 @@
+_require "basis.smi"
+_require "Dynamic.smi"
+_require "CharMap.smi"
+_require "Formatter.smi"
+
+structure FormatParser =
+struct
+datatype t
+  = Const of string
+  | FormatFun of Dynamic.t -> string
+
+val parse: Formatter.t CharMap.t -> string -> t list
+end

@@ -1,6 +1,7 @@
 _require "basis.smi"
 _require "smlunit-lib.smi"
 _require "format/Format.smi"
+_require "format/Dynamic.smi"
 
 structure FormatTest = struct
   val suite : unit -> SMLUnit.Test.test

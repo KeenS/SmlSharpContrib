@@ -26,4 +26,23 @@ fun mk () =
 
 fun emb (f,_) = f
 fun prj (_,f) = f
+
+val intKey: int key = mk()
+val fromInt = emb intKey
+val getInt = prj intKey
+
+val realKey: real key = mk()
+val fromReal = emb realKey
+val getReal = prj realKey
+
+val charKey: char key = mk()
+val fromChar = emb charKey
+val getChar = prj charKey
+
+val stringKey: string key = mk()
+val fromString = emb stringKey
+val getString = prj stringKey
+
+
+
 end

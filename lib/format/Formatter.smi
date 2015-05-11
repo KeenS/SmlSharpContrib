@@ -1,0 +1,13 @@
+_require "basis.smi"
+_require "Dynamic.smi"
+
+structure Formatter =
+struct
+type t =  {leftAlign:bool, addPlus:bool, addBrank:bool, printRadix:bool, padWithZero:bool}
+          -> int option -> int option -> Dynamic.t -> string
+val formatDigit: t
+val formatHex: t
+val formatChar: t
+val formatReal: t
+val formatString: t
+end

@@ -8,4 +8,20 @@ type 'a key(=boxed)
 val mk : unit -> 'a key
 val emb : 'a key -> 'a -> t
 val prj : 'a key -> t -> 'a option
+
+val intKey: int key
+val fromInt: int -> t
+val getInt: t -> int option
+
+val realKey: real key
+val fromReal: real -> t
+val getReal: t -> real option
+
+val charKey: char key
+val fromChar: char -> t
+val getChar: t -> char option
+
+val stringKey: string key
+val fromString: string -> t
+val getString: t -> string option
 end

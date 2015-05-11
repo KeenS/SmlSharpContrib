@@ -1,13 +1,11 @@
 _require "basis.smi"
-_require "Dynamic.smi"
-_require "../ext/Map.smi"
+_require "./Dynamic.smi"
+_require "./CharMap.smi"
+_require "./FormatParser.smi"
+_require "./Formatter.smi"
 
 structure Format =
 struct
-type t(=boxed)
-val fromInt: int -> Dynamic.t
-val fromString: string -> Dynamic.t
-val fromChar: char -> Dynamic.t
-val fromReal: real -> Dynamic.t
 val format: string -> Dynamic.t list -> string
+val printf: string -> Dynamic.t list -> unit
 end

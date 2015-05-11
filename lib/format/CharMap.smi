@@ -1,0 +1,10 @@
+_require "basis.smi"
+_require "../ext/Map.smi"
+
+structure CharMap =
+struct
+type 'a t (= boxed)
+val empty: 'a t
+val add: char -> 'a -> 'a t -> 'a t
+val find: char -> 'a t -> 'a option
+end
