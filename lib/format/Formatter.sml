@@ -30,15 +30,19 @@ fun formatWidth str {leftAlign, padWithZero, ...} (SOME(width)) =
 
 fun formatString flags precision width arg =
   let
-      val string =  getString arg
+      val string' =  getString arg
+      val string = String.extract(string', 0, precision)
+                   handle Subscript => string'
   in
-      formatWidth (String.extract(string, 0, precision)) flags width
+      formatWidth string flags width
   end
 
 fun formatInt radix (flags as {addPlus, addBrank, printRadix, ...}) precision width arg =
   let
       val int = getInt arg
-      val str = (String.extract(Int.fmt radix (abs int), 0, precision))
+      val str' = Int.fmt radix (abs int)
+      val str = String.extract(str', 0, precision)
+                handle Subscript => str'
       val rad = if printRadix
                 then case radix of
                             S.DEC => ""
@@ -55,7 +59,7 @@ fun formatInt radix (flags as {addPlus, addBrank, printRadix, ...}) precision wi
                    else ""
 
   in
-      formatWidth (String.extract(prefix ^ rad ^ str, 0, precision)) flags width
+      formatWidth (prefix ^ rad ^ str) flags width
   end
 
 val formatDigit = formatInt S.DEC
