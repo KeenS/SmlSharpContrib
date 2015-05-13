@@ -59,8 +59,25 @@ fun suite _ = Test.labelTests [
       ("%.10d: with precision larger than printed number length",
        fn () => assertEqualString "1234" (format"%.10d" [fromInt 1234])),
 
-      ("char args",
-       fn () => assertEqualString "The first letter of Hello is H" (format "The first letter of %s is %c" [fromString "Hello", fromChar (String.sub("Hello", 0))])),
+      ("%c: simple",
+       fn () => assertEqualString "c" (format "%c" [fromChar #"c"])),
+      ("%10c: with width",
+       fn () => assertEqualString "         c" (format "%10c" [fromChar #"c"])),
+      ("%-10c: width with left padding flag",
+       fn () => assertEqualString "c         " (format "%-10c" [fromChar #"c"])),
+      ("%010c: width with 0 fill flag",
+       fn () => assertEqualString "000000000c" (format "%010c" [fromChar #"c"])),
+      ("%+c: plus flag (meaningless)",
+       fn () => assertEqualString "c" (format "%+c" [fromChar #"c"])),
+      ("%#c: # flag (meaningless)",
+       fn () => assertEqualString "c" (format "%#c" [fromChar #"c"])),
+      ("% c: space flag (meaningless)",
+       fn () => assertEqualString "c" (format "% c" [fromChar #"c"])),
+      ("%.1c: with precision",
+       fn () => assertEqualString "c" (format "%.3c" [fromChar #"c"])),
+      ("%.10c: with precision larger than string length",
+       fn () => assertEqualString "c" (format "%.10c" [fromChar #"c"])),
+
       ("real args",
        fn () => assertEqualString "1.0 + 1.0 = 2.0" (format "%f + %f = %f" [fromReal 1.0, fromReal 1.0, fromReal 2.0]))
   ]
