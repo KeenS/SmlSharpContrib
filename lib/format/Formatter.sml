@@ -8,9 +8,9 @@ type t =  {leftAlign:bool, addPlus:bool, addBrank:bool, printRadix:bool, padWith
           -> int option -> int option -> Dynamic.t -> string
 
 
-fun getOrFail msg opt = case opt of
+fun getOrFail typename opt = case opt of
                             SOME(v) => v
-                          | NONE => raise (Fail ("expected " ^ msg ^ " but got other."))
+                          | NONE => raise (Fail ("expected " ^ typename ^ " but got other."))
 
 val getString = getOrFail "string" o D.getString
 val getInt = getOrFail "int" o D.getInt
