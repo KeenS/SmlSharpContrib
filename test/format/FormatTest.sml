@@ -79,7 +79,7 @@ fun suite _ = Test.labelTests [
        fn () => assertEqualString "c" (format "%.10c" [fromChar #"c"])),
 
       ("real args",
-       fn () => assertEqualString "1.0 + 1.0 = 2.0" (format "%f + %f = %f" [fromReal 1.0, fromReal 1.0, fromReal 2.0]))
+       fn () => assertEqualString "1.000000 + 1.000000 = 2.000000" (format "%f + %f = %f" [fromReal 1.0, fromReal 1.0, fromReal 2.0]))
   ]
 
 end
