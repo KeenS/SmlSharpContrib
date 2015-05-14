@@ -57,7 +57,7 @@ fun suite _ = Test.labelTests [
       ("%.3d: with precision",
        fn () => assertEqualString "123" (format"%.3d" [fromInt 1234])),
       ("%.10d: with precision larger than printed number length",
-       fn () => assertEqualString "1234" (format"%.10d" [fromInt 1234])),
+       fn () => assertEqualString "0000001234" (format"%.10d" [fromInt 1234])),
 
       ("%c: simple",
        fn () => assertEqualString "c" (format "%c" [fromChar #"c"])),
