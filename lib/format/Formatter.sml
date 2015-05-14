@@ -71,11 +71,21 @@ fun formatChar flags precision width arg =
   in
       formatWidth (Char.toString char) flags width
   end
-fun formatReal flags precision width arg =
+
+fun formatReal (flags as {addPlus, addBrank, printRadix, ...}) precision width arg =
   let
       val real = getReal arg
+      val str' = Real.fmt (S.FIX(precision)) (abs real)
+      val prefix = if real < 0.0
+                   then "-"
+                   else if addPlus
+                               (* addPlus overrides addBrank *)
+                   then "+"
+                   else if addBrank
+                   then " "
+                   else ""
   in
-      formatWidth (Real.toString real) flags width
+      formatWidth (prefix ^ str') flags width
   end
 
 
