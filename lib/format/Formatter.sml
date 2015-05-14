@@ -42,7 +42,7 @@ fun formatInt radix (flags as {addPlus, addBrank, printRadix, ...}) precision wi
       val int = getInt arg
       val str' = Int.fmt radix (abs int)
       val str = String.extract(str', 0, precision)
-                handle Subscript => str'
+                handle Subscript => formatWidth str' {padWithZero = true, leftAlign = false} precision
       val rad = if printRadix
                 then case radix of
                             S.DEC => ""
